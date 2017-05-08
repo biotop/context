@@ -1,4 +1,4 @@
-# CONTEXT - A TOOL TO ANALYSE SEQUENCE CONTEXT OF GENERIC (BIOLOGICAL) DATA
+# CONTEXT - a tool for context analysis of (generic) biological data
 
 ## Motivation 
 The analysis of sequence context presents a common challenge/question in many biological problems. 
@@ -21,12 +21,12 @@ Compare features of a sequence window around a site of interest to a suitable se
 
 ## Implementation
 - Plot (strand-specific) sequence profiles (ie. fractions of sequence elements vs. relative position) centered at a set of input positions/intervals
-  - Also enable to plot linear combinations of fractions (e.g., “A+T”, “G+C”).
+  - Also enable to plot linear combinations of fractions (e.g., "A+T", "G+C").
   - Example: This PDF shows nucleotide profile plots in a +/-100bp sequence context around various subsets of small-RNA transcription start sites (sRNA TSS) in borrelia burgdorferii.
 One core use case could be that a researcher uploads the position set of all sRNA TSS and CONTEXT then supports sub-setting these positions and creating the shown plots, additionally plotting a background signal (e.g., gene TSS)
   - Enable plotting n background signals, e.g. by random uniform sampling (bootstrapping) from background annotation sets (see below). NOTE that the nucleotide profiles for 
 these background annotation sets can be pre-calculated which should enable fast response times.
-  - “zoom stage” can be set by user (e.g., “show 1000bp up/downstream”, etc.) but we might have to restrict to a predefined maximum value to make this efficient (nucleotide profiles for the largest possible zoom will be precomputed. Then, an interactive data exploration even in a Browser-based environment should be feasible).
+  - "zoom stage" can be set by user (e.g., "show 1000bp up/downstream", etc.) but we might have to restrict to a predefined maximum value to make this efficient (nucleotide profiles for the largest possible zoom will be precomputed. Then, an interactive data exploration even in a Browser-based environment should be feasible).
   - Automatically plot genomic average signal (e.g., mean fractions).
 
 - Also support summary statistics calculated from context 
@@ -45,7 +45,7 @@ these background annotation sets can be pre-calculated which should enable fast 
     - Simple input format (e.g., UCSC BED files)
     - Canonically sorted
     - Overlapping vs. non-overlapping intervals in annotation sets?
-    - Annotation sets should be as “elementary” as possible. Derivation of meaningful subsets should be automized:
+    - Annotation sets should be as "elementary" as possible. Derivation of meaningful subsets should be automized:
 E.g., intersect annotation sets (e.g., human SNP positions +  exon annotations => exonic SNPs).
     - A subtool for preparing annotation sets should be provided.
   - Annotation datasets could be added in a community effort. Users could comment on existing annotation sets but also on calculated sequence context graphs, e.g., linking to existing publications that support/contradict the shown data, etc.
@@ -55,16 +55,16 @@ E.g., intersect annotation sets (e.g., human SNP positions +  exon annotations =
   - Correlations between annotation sets will be checked automatically (in its simplest form: % overlap. Possibly also develop a similarity measure for sequence profiles)
     - only for primary data (i.e., not derived from existing annotation sets). How to check?
   - User matching based on found correlations:
-    - E.g.: “CONTEXT noticed that the dataset ‘small-RNA TSS in Bb’ seems correlated to your dataset ‘B31 sRNA TSS’. Do you want to learn more about this dataset?
+    - E.g.: "CONTEXT noticed that the dataset 'small-RNA TSS in Bb' seems correlated to your dataset 'B31 sRNA TSS'. Do you want to learn more about this dataset?
 
 - Abstract implementation
-  - Implementation should be as abstract as possible (e.g., no “biological knowledge” in the core algorithms!).
+  - Implementation should be as abstract as possible (e.g., no "biological knowledge" in the core algorithms!).
   - It should support sequences of any kind (including nucleotide and amino-acid sequences).
     - Support multiple reference genomes (and possibly versions)
     - Start simple: human and e.coli?
-  - CONTEXT should also support “translators” that translate given sequences to another representation (possibly using another core alphabet) based on simple rules
+  - CONTEXT should also support "translators" that translate given sequences to another representation (possibly using another core alphabet) based on simple rules
     - Example: translate an amino acid sequence to a sequence representing various properties of these AAs (e.g., steric properties, polarity, charge, etc.).
-- Don’t do it all. CONTEXT should concentrate only on its core business which is to visualize/identify signal similarities/differences in sequence context data. But CONTEXT may well provide output data in a form that can then be plugged into more specialized tools (e.g, it could create all required files for analysis in MEME/Homer if researches want to look for actual sequence motifs).
+- Don't do it all. CONTEXT should concentrate only on its core business which is to visualize/identify signal similarities/differences in sequence context data. But CONTEXT may well provide output data in a form that can then be plugged into more specialized tools (e.g, it could create all required files for analysis in MEME/Homer if researches want to look for actual sequence motifs).
 
 ## Directions
 - **Data-based matching of researchers** - There's no better description of a scientists research interests than her data. Provide a space for researchers to discuss common features based on their data. Open invitation/Matchmaking
