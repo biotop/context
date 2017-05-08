@@ -1,10 +1,10 @@
-package examples
+package biotop.context.examples
 
 import org.junit._
-import Assert._
+import org.junit.Assert._
 
 @Test
-class ExampleTest {
+class ExampleAppTest {
 
     @Test
     def testOK() = assertTrue(true)
