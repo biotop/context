@@ -59,6 +59,7 @@
 	</dependencies>
 
 	<build>
+		<defaultGoal>scala:compile scala:testCompile</defaultGoal>
 		<sourceDirectory>src/main/scala</sourceDirectory>
 		<testSourceDirectory>src/test/scala</testSourceDirectory>
 		<pluginManagement>
