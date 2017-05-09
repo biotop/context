@@ -54,7 +54,7 @@ class LocationTest {
     assertTrue(A == A)
     assertTrue(A != B)
     // previous problem with hashCode function wrongly asserted A == I due to hashCode of an Int being its value
-    assertFalse(A == I)
+    assertFalse(A == A)
   }
 
   @Test

@@ -131,8 +131,7 @@ class Interval(override val ref: RefSeq, override val chr: String, val start: In
       case _ => false
     }
   override def hashCode: Int = {
-    chr.hashCode + start.hashCode() + end.hashCode()
+    List(chr, start, end).hashCode
   }
 
 }
-
