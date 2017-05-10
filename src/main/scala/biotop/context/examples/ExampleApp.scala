@@ -1,7 +1,7 @@
 package biotop.context.examples
 
 /**
- * @author niko
+ * @author niko.popitsch
  */
 object ExampleApp {
 

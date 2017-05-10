@@ -1,9 +1,8 @@
 package biotop.context.core
 
-import scala.collection.immutable.List
-
 /**
- * abstract genomic location on a given reference genome
+ * Abstract location on a given reference genome
+ * @author niko.popitsch
  */
 abstract class Location(val ref: RefSeq, val chr: String) extends Ordered[Location] {
   def overlaps(l: Location): Boolean = {

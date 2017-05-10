@@ -8,10 +8,14 @@ import util.control.Breaks._
 
 /**
  * Import location sets from various serialization formats.
+ * @author niko.popitsch
  */
 abstract class LocationSetImporter {
   def loadFromStream(r: RefSeq, s: String): Seq[Location]
 
+  /**
+   * Create a buffered file input stream. Supports .gz extensions. 
+   */
   def fis(s: String): InputStream = {
     var f = new File(s);
     if (!f.exists())
@@ -49,9 +53,14 @@ object BedImporter extends LocationSetImporter {
     bed.close
     return l
   }
+  
+  
 
 }
 
+/**
+ * Debugging
+ */
 object Main {
   def main(args: Array[String]) {
     
