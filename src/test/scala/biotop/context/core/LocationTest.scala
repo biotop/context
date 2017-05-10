@@ -18,6 +18,7 @@ class LocationTest {
   val F = new Interval(RefSeq.hg19, "1", 10, 100)
   val G = new Interval(RefSeq.hg19, "1", 11, 110)
   val H = new Position(RefSeq.hg19, "1", 45)
+  val I = new Interval(RefSeq.hg19, "1", 2, 99)
 
   @Before def init() {
     // do some initialization
@@ -37,7 +38,7 @@ class LocationTest {
     // intervals overlap positions if they contain them
     assertTrue(A.overlaps(C))
 
-    // test intervals overlap 
+    // test intervals overlap
     assertTrue(A.overlaps(F))
     assertTrue(F.overlaps(A))
     assertTrue(A.overlaps(G))
@@ -52,6 +53,8 @@ class LocationTest {
     assertEquals(D, E)
     assertTrue(A == A)
     assertTrue(A != B)
+    // previous problem with hashCode function wrongly asserted A == I due to hashCode of an Int being its value
+    assertFalse(A == A)
   }
 
   @Test
@@ -70,5 +73,3 @@ class LocationTest {
   }
 
 }
-
-
