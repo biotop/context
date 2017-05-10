@@ -29,8 +29,16 @@ class Configuration(val path: String) extends PersistentObject {
     }
   }
 
+  def del(o: AnyRef, id: String) = {
+
+    o match {
+      case r if r == classOf[RefSeq] => refSeq.remove(id)
+      case _ => println("unknown class " + o)
+    }
+  }
+
   override def save() {
-    var s : String = this.toString()
+    var s: String = this.toString()
     new PrintWriter(path) { write(s); close }
   }
 
@@ -68,23 +76,23 @@ object Configuration {
   }
 
   def load(path: String): Configuration = {
-    if (! new File(path).exists()) {
+    if (!new File(path).exists()) {
       println("Creating new configuration")
       return new Configuration(path)
     }
     var str = Source.fromFile(path).mkString
-    println("configuration: " + str + "\n-------------------------------")
+    //    println("configuration: " + str + "\n-------------------------------")
     return fromJson[Configuration](str)
   }
 
   def main(args: Array[String]): Unit = {
-//        // example: serialize and deserialize a refseq object.
-//        var ser = RefSeq.hg19.toString()
-//        println(ser)
-//        var des: RefSeq = RefSeq.fromString(ser)
-//        println(des)
+    //        // example: serialize and deserialize a refseq object.
+    //        var ser = RefSeq.hg19.toString()
+    //        println(ser)
+    //        var des: RefSeq = RefSeq.fromString(ser)
+    //        println(des)
 
-//    // example simple configuration
+    //    // example simple configuration
     var conf = new Configuration("c:/data/context/context.conf.json")
     conf.add(RefSeq.hg19)
     conf.save()

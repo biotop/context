@@ -1,8 +1,10 @@
 package biotop.context.core
 
+import scala.util.Random
 import org.junit._
 import org.junit.Assert._
 import scala.collection.mutable._
+import biotop.context.util.DivTools
 
 /**
  * Test the location classes
@@ -53,8 +55,8 @@ class LocationTest {
     assertEquals(D, E)
     assertTrue(A == A)
     assertTrue(A != B)
-    // previous problem with hashCode function wrongly asserted A == I due to hashCode of an Int being its value
-    assertFalse(A == A)
+    assertFalse(A == I)
+    assertNotEquals(A,I)
   }
 
   @Test
@@ -70,6 +72,30 @@ class LocationTest {
     assertEquals(D + 1, H)
     assertNotEquals(D + 2, H)
     assertEquals(A + 10, G)
+  }
+
+
+  /**
+   * Test performance 
+   */
+  @Ignore("slow")
+  @Test
+  def hashCodePerformance() {
+    val rand = new Random()
+    val chrs = List("1", "2", "3")
+    val set = scala.collection.mutable.Set[Location]()
+    val N = 100000
+    val M = 100
+    DivTools.time {
+      for (a <- 1 to M) {
+        for (b <- 1 to N) {
+          var c = chrs(rand.nextInt(chrs.length))
+          var l = new Interval(RefSeq.hg19, c, rand.nextInt(100), rand.nextInt(100))
+          set.add(l)
+          assertTrue(set.contains(l))
+        }
+      }
+    }
   }
 
 }

@@ -3,12 +3,12 @@
   "refSeq" : {
     "hg19" : {
       "id" : "hg19",
-      "desc" : "",
+      "desc" : "Reference sequence hg19",
       "path" : "Z:/ref/genomes/hs37d5/hs37d5.fa"
     },
     "GRCh38" : {
       "id" : "GRCh38",
-      "desc" : "",
+      "desc" : "hg20",
       "path" : "Z:/ref/genomes/GRCh38/GCA_000001405.15_GRCh38_full_plus_hs38d1_analysis_set"
     }
   }

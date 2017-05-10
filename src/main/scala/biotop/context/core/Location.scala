@@ -1,5 +1,7 @@
 package biotop.context.core
 
+import scala.util.hashing.MurmurHash3
+
 /**
  * Abstract location on a given reference genome
  * @author niko.popitsch
@@ -56,11 +58,11 @@ class Position(override val ref: RefSeq, override val chr: String, val pos: Int)
   // equals
   override def equals(that: Any): Boolean =
     that match {
-      case that: Position => this.hashCode == that.hashCode
+      case that: Position => this.chr == that.chr && this.pos == that.pos
       case _ => false
     }
   override def hashCode: Int = {
-    chr.hashCode + pos.hashCode()
+    MurmurHash3.arrayHash(Array(chr, pos))
   }
 }
 
@@ -126,11 +128,13 @@ class Interval(override val ref: RefSeq, override val chr: String, val start: In
   // equals
   override def equals(that: Any): Boolean =
     that match {
-      case that: Interval => this.hashCode == that.hashCode
+      case that: Interval => this.chr == that.chr && this.start == that.start && this.end == that.end
       case _ => false
     }
   override def hashCode: Int = {
-    List(chr, start, end).hashCode
+    //chr.hashCode + start.hashCode + end.hashCode
+    //List(chr, start, end).hashCode
+    MurmurHash3.arrayHash(Array(chr, start, end))
   }
 
 }
