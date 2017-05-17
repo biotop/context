@@ -14,7 +14,7 @@ class RefSeq(val id: String, val desc: String, val path: String) extends NamedOb
   // equals
   override def equals(that: Any): Boolean =
     that match {
-      case that: RefSeq => this.hashCode == that.hashCode
+      case that: RefSeq => this.id == that.id
       case _ => false
     }
   

@@ -14,6 +14,9 @@ abstract class Location(val ref: RefSeq, val chr: String) extends Ordered[Locati
   def canEqual(a: Any) = a.isInstanceOf[Location]
 }
 
+class Chromosome(override val ref: RefSeq, override val chr: String) extends Location(ref, chr) {
+}
+
 /**
  * genomic position
  */
