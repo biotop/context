@@ -1,5 +1,6 @@
 package biotop.context.io
 
+import java.io.File
 import java.io.PrintWriter
 
 import scala.collection.mutable.HashMap
@@ -9,12 +10,13 @@ import scala.reflect.ClassTag
 import scala.reflect.classTag
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 
+import biotop.context.core.LocationSet
 import biotop.context.core.RefSeq
 import biotop.context.util.PersistentObject
-import com.fasterxml.jackson.databind.SerializationFeature
-import java.io.File
+import biotop.context.core.DiscLocationSet
 
 /**
  * Main configuration
@@ -22,17 +24,28 @@ import java.io.File
  */
 class Configuration(val path: String) extends PersistentObject {
   var refSeq: Map[String, RefSeq] = new HashMap()
+  var locSet: Map[String, DiscLocationSet] = new HashMap()
+
+  /**
+   * create data dir
+   */
+  var homedir = new File(path).getParentFile
+  var datadir = new File(homedir, "data")
+  if (!datadir.exists())
+    if (!datadir.mkdir())
+      throw new RuntimeException("could not create data dir at " + datadir)
 
   def add(o: Any) = {
     o match {
-      case r: RefSeq => refSeq += r.id -> r
+      case r: RefSeq => if (refSeq.contains(r.id)) throw new RuntimeException("RefSeq ID must be unique") else refSeq += r.id -> r
+      case l: DiscLocationSet => if (refSeq.contains(l.id)) throw new RuntimeException("LocationSet ID must be unique") else locSet += l.id -> l
     }
   }
 
   def del(o: AnyRef, id: String) = {
-
     o match {
       case r if r == classOf[RefSeq] => refSeq.remove(id)
+      case l if l == classOf[LocationSet] => locSet.remove(id)
       case _ => println("unknown class " + o)
     }
   }
@@ -48,10 +61,13 @@ object Configuration {
 
   var refSeq: Map[String, RefSeq] = new HashMap()
 
+  var locSet: Map[String, LocationSet] = new HashMap()
+
   /**
    * initialize jackson mapper.
    */
   val jacksonMapper = new ObjectMapper().registerModule(DefaultScalaModule).enable(SerializationFeature.INDENT_OUTPUT);
+  jacksonMapper.registerSubtypes(classOf[DiscLocationSet])
   //jacksonMapper .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
   /**
@@ -92,12 +108,17 @@ object Configuration {
     //        var des: RefSeq = RefSeq.fromString(ser)
     //        println(des)
 
-    //    // example simple configuration
-    var conf = new Configuration("c:/data/context/context.conf.json")
-    conf.add(RefSeq.hg19)
-    conf.save()
+    //        // example simple configuration
+    //        var conf = new Configuration("c:/data/context/context.conf.json")
+    //        conf.add(RefSeq.hg19)
+    //        conf.add(LocationSet.importFromFile("i1", "desc1", RefSeq.hg19, "src/test/resources/TestIntervals1.bed", "C:/data/context/i1.bed"))
+    //        conf.save()
     var test = Configuration.load("c:/data/context/context.conf.json")
+    println("--------------------------")
     println(test)
+    println("--------------------------")
+
+    test.locSet.get("i1").get.iterator.foreach { println }
 
   }
 }

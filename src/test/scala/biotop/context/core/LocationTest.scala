@@ -1,9 +1,13 @@
 package biotop.context.core
 
+import scala.collection.mutable.TreeSet
 import scala.util.Random
-import org.junit._
-import org.junit.Assert._
-import scala.collection.mutable._
+
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Ignore
+import org.junit.Test
+
 import biotop.context.util.DivTools
 
 /**
@@ -30,53 +34,82 @@ class LocationTest {
   def testOverlap() {
 
     // intervals and positions overlap with themselves.
-    assertTrue(A.overlaps(A))
-    assertTrue(D.overlaps(D))
+    Assert.assertTrue(A.overlaps(A))
+    Assert.assertTrue(D.overlaps(D))
 
     // intervals / positions on different chroms do not overlap
-    assertFalse(A.overlaps(B))
-    assertFalse(B.overlaps(C))
+    Assert.assertFalse(A.overlaps(B))
+    Assert.assertFalse(B.overlaps(C))
 
     // intervals overlap positions if they contain them
-    assertTrue(A.overlaps(C))
+    Assert.assertTrue(A.overlaps(C))
 
     // test intervals overlap
-    assertTrue(A.overlaps(F))
-    assertTrue(F.overlaps(A))
-    assertTrue(A.overlaps(G))
-    assertTrue(G.overlaps(A))
+    Assert.assertTrue(A.overlaps(F))
+    Assert.assertTrue(F.overlaps(A))
+    Assert.assertTrue(A.overlaps(G))
+    Assert.assertTrue(G.overlaps(A))
 
   }
 
   @Test
   def testEquals() {
     // test equality
-    assertEquals(A, A)
-    assertEquals(D, E)
-    assertTrue(A == A)
-    assertTrue(A != B)
-    assertFalse(A == I)
-    assertNotEquals(A,I)
+    Assert.assertEquals(A, A)
+    Assert.assertEquals(D, E)
+    Assert.assertTrue(A == A)
+    Assert.assertTrue(A != B)
+    Assert.assertFalse(A == I)
+    Assert.assertNotEquals(A, I)
   }
 
   @Test
   def testList() {
     var s = List(A, B, C)
     // test sorting
-    assertEquals(s.sorted, List(A, C, B))
+    Assert.assertEquals(s.sorted, List(A, C, B))
   }
 
   @Test
   def testInc() {
     //test offset functions
-    assertEquals(D + 1, H)
-    assertNotEquals(D + 2, H)
-    assertEquals(A + 10, G)
+    Assert.assertEquals(D + 1, H)
+    Assert.assertNotEquals(D + 2, H)
+    Assert.assertEquals(A + 10, G)
   }
 
+  @Test
+  def testOrdering() {
+    Assert.assertTrue(A < B)
+    Assert.assertTrue(B > C)
+    Assert.assertTrue(A < C)
+    Assert.assertTrue(C > D)
+    var shouldList: List[Location] = List(A, D, C, B)
+    var isList: scala.collection.SortedSet[Location] = TreeSet(D, C, B, A)
+    (shouldList, isList).zipped.foreach { (a, b) => Assert.assertEquals(a, b) }
+
+    Assert.assertEquals(isList.firstKey, A)
+    Assert.assertTrue(isList.lastKey == B)
+  }
+
+  @Test
+  def testSyncIt() {
+
+    /**
+     * NOTE list must be sorted!
+     */
+    var l1 = new MemoryLocationSet("i1", "", RefSeq.hg19, List(A, B).asInstanceOf[List[Location]].sorted)
+    var l2 = new MemoryLocationSet("i2", "", RefSeq.hg19, List(C, D).asInstanceOf[List[Location]].sorted)
+
+    var shouldList: List[Location] = List(A.toPos, D.toPos, C.toPos, B.toPos)
+    var isList = new SynchronizedLeftEndpointIterator(List(l1, l2)).consume
+    println(shouldList)
+    println(isList)
+    (shouldList, isList).zipped.foreach { (a, b) => Assert.assertEquals(a, b) }
+  }
 
   /**
-   * Test performance 
+   * Test performance
    */
   @Ignore("slow")
   @Test
@@ -92,7 +125,7 @@ class LocationTest {
           var c = chrs(rand.nextInt(chrs.length))
           var l = new Interval(RefSeq.hg19, c, rand.nextInt(100), rand.nextInt(100))
           set.add(l)
-          assertTrue(set.contains(l))
+          Assert.assertTrue(set.contains(l))
         }
       }
     }

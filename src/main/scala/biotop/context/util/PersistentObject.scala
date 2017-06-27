@@ -7,6 +7,7 @@ import biotop.context.io.Configuration
  * @author niko.popitsch
  */
 trait PersistentObject {
+
   def path: String
 
   override def toString() = Configuration.toJson(this)
